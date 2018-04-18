@@ -12,10 +12,27 @@ avalanche observation data back to 1980:
 <img alt="caic zones" src="/pub_figs/caic_example.png" width='500'>
 
 __weather data__
+Local Climatalogical Data (often airports)
+https://www.ncdc.noaa.gov/cdo-web/datatools/lcd
+
 
 ### EDA/ data trends:
 __locations:__
 <img alt="avy by location" src="/figs/2018_d3_landmarks.png" width='500'>
+
+__backcountry zones:__
+BC Zone
+Northern San Juan        2998
+Front Range              1565
+Vail & Summit County     1337
+Aspen                    1210
+Gunnison                 1188
+Sawatch Range             806
+Southern San Juan         585
+Steamboat & Flat Tops     186
+Grand Mesa                155
+Sangre de Cristo           22
+
 __snow angle:__ (this is well understood science)
 <img alt="avy by location" src="/figs/2018_snow_angle.png" width='300'>
 
@@ -92,3 +109,49 @@ wet bulb temp: The wet-bulb temperature is the lowest temperature which may be a
 #### improvements:
  - __more data!__ models need a longer data record (and more zones) to train
 __more flexible models__: hard to capture the highly variable nature of a stochastic natural process
+
+__remove summer, add jday__:
+linear regression cval training score = -0.126
+linear regression test rmse = 16.848
+linear L1 regression cval training score = -0.120
+linear L1 regression test rmse = 16.853
+gbr cval training score = -0.285
+gbr test rmse = 18.193 # THIS IS BROKEN
+rfr cval training score = -0.749
+rfr test rmse = 16.231
+
+feats: ensemble methods pick jday:
+[('jday', 0.1261057435070129),
+ ('DAILYAverageWetBulbTemp', 0.11513082645246309),
+ ('DeptFromNormalAvgTemp', 0.095910342178670629),
+ ('swe_start_m', 0.073278662353808158),
+ ('airtemp_min_C', 0.071798439349723339),
+ ('airtemp_max_C', 0.068463001848384802),
+ ('precip_start_m', 0.059696369523897577),
+ ('DAILYAverageDewPointTemp', 0.057147686870379397),
+ ('DAILYAverageWindSpeed', 0.055831398465109511),
+ ('airtemp_mean_C', 0.047471574729487383),
+ ('Daily_peak_wind', 0.045115787330605311),
+ ('DAILYAverageRelativeHumidity', 0.043444941897989253),
+ ('Peak_wind_direction', 0.043047763667893361),
+ ('SustainedWindDirection', 0.041700224302565453),
+ ('SustainedWindSpeed', 0.032177245689151368),
+ ('precip_incr_m', 0.023679991832858259)]
+
+__best gbr model:__
+linear regression cval training score = -0.126
+linear regression test rmse = 16.848
+linear L1 regression cval training score = -0.120
+linear L1 regression test rmse = 16.853
+gbr cval training score = -0.129
+gbr test rmse = 16.683
+rfr cval training score = -0.788
+rfr test rmse = 16.492
+
+model:
+<img alt="first model"
+ src="/figs/nosummer/aspen_nosummer_preds_gbr_best.png" width='500'>
+
+model training:
+<img alt="first model"
+ src="/figs/nosummer/gbr_training.png" width='500'>

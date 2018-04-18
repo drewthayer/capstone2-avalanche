@@ -2,7 +2,9 @@ from sklearn.linear_model import LinearRegression, Lasso
 from sklearn.model_selection import train_test_split
 from sklearn.model_selection import cross_val_score
 from sklearn.ensemble import GradientBoostingRegressor
+from sklearn.ensemble import RandomForestRegressor
 from sklearn.model_selection import GridSearchCV
+from sklearn.preprocessing import PolynomialFeatures
 import pickle
 import numpy as np
 import pandas as pd
@@ -11,8 +13,8 @@ import matplotlib.pyplot as plt
 
 if __name__=='__main__':
     # load data
-    X = pickle.load( open( "aspen_1_X_d2up.p", "rb" ) )
-    y = pickle.load( open( "aspen_1_y_d2up.p", "rb" ) )
+    X = pickle.load( open( "aspen_X_nosummer.p", "rb" ) )
+    y = pickle.load( open( "aspen_y_nosummer.p", "rb" ) )
 
     # randomized ttsplit
     #X_train, X_test, y_train, y_test = train_test_split(X.values,y.values,test_size=0.2)
@@ -30,8 +32,8 @@ if __name__=='__main__':
     score = cross_val_score(linear,X_train,y_train,cv=10)
     print('linear regression cval training score = {:0.3f}'.format(np.mean(score)))
 
-    preds = linear.predict(X_test)
-    rmse = np.sqrt(np.sum((y_test - preds)**2))
+    preds_linear = linear.predict(X_test)
+    rmse = np.sqrt(np.sum((y_test - preds_linear)**2))
     print('linear regression test rmse = {:0.3f}'.format(rmse))
 
     linear_coefs = linear.coef_
@@ -50,15 +52,9 @@ if __name__=='__main__':
 
 
     ''' gradient boost regressor '''
-    #gbr = GradientBoostingRegressor(loss='ls',n_estimators=500)
-    # params from grid search:
-    gbr = GradientBoostingRegressor(alpha=0.9, criterion='friedman_mse', init=None,
-             learning_rate=0.1, loss='lad', max_depth=3, max_features=None,
-             max_leaf_nodes=None, min_impurity_decrease=0.0,
-             min_impurity_split=None, min_samples_leaf=1,
-             min_samples_split=2, min_weight_fraction_leaf=0.0,
-             n_estimators=300, presort='auto', random_state=None,
-             subsample=1.0, verbose=0, warm_start=False)
+    best_params = {'loss': 'lad', 'max_depth': 6, 'max_features': 'log2', 'n_estimators': 600}
+    gbr = GradientBoostingRegressor(**best_params)
+
     gbr.fit(X_train,y_train)
     score = cross_val_score(gbr,X_train,y_train,cv=10)
     print('gbr cval training score = {:0.3f}'.format(np.mean(score)))
@@ -67,33 +63,57 @@ if __name__=='__main__':
     rmse = np.sqrt(np.sum((y_test - preds_gbr)**2))
     print('gbr test rmse = {:0.3f}'.format(rmse))
 
-    importances = gbr.feature_importances_
+    #oob = gbr.oob_improvement_
+    train_score = gbr.train_score_
+    importances_gbr = gbr.feature_importances_
+
+    ''' random forest regressor '''
+    #gbr = GradientBoostingRegressor(loss='ls',n_estimators=500)
+    # params from grid search:
+    rfr = RandomForestRegressor(n_estimators = 300)
+    rfr.fit(X_train,y_train)
+    score = cross_val_score(rfr,X_train,y_train,cv=10)
+    print('rfr cval training score = {:0.3f}'.format(np.mean(score)))
+
+    preds_rfr = rfr.predict(X_test)
+    rmse = np.sqrt(np.sum((y_test - preds_rfr)**2))
+    print('rfr test rmse = {:0.3f}'.format(rmse))
+
+    importances_rfr = rfr.feature_importances_
 
     # feature importances
     linear_feats = sorted(zip(X.columns, linear_coefs), key=lambda x:abs(x[1]), reverse=True)
     lasso_feats = sorted(zip(X.columns, lasso_coefs), key=lambda x:abs(x[1]), reverse=True)
-    gbr_feats = sorted(zip(X.columns, importances), key=lambda x:abs(x[1]), reverse=True)
+    gbr_feats = sorted(zip(X.columns, importances_gbr), key=lambda x:abs(x[1]), reverse=True)
+    rfr_feats = sorted(zip(X.columns, importances_rfr), key=lambda x:abs(x[1]), reverse=True)
 
     # figures
     fig, ax = plt.subplots(1,1,figsize=(6,4))
-    ax.plot(y_train)
+    ax.plot(y)
     ax.set_ylabel('daily # of avalanches')
     ax.set_title('Aspen, CO: avalanches >= D2')
 
     fig, ax = plt.subplots(1,1,figsize=(6,4))
     h1 = ax.plot(range(len(y_test)),y_test,'b', label='actual')
-    h2 = ax.plot(range(len(preds_lasso)),preds_lasso,'orange', label='predicted')
+    h2 = ax.plot(range(len(preds_gbr)),preds_gbr,'orange', label='predicted')
     ax.set_ylabel('daily # of avalanches')
     ax.set_title('Aspen, CO: avalanches >= D2')
     ax.legend()
     plt.show()
 
+    fig, ax = plt.subplots(1,1,figsize=(6,4))
+    ax.plot(train_score,'-k')
+    ax.set_xlabel('boosting stage')
+    ax.set_ylabel('training score')
+    ax.set_title('Gradient Boosting Regressor training')
     # # grid search for gradient boosting regressor
     # param_grid = {
     #     'loss': ['ls', 'lad', 'huber', 'quantile'],
-    #     'n_estimators': [300,400,500,800],
-    #     'max_depth': [2,3,5,7]}
-    # gbr_grid = GridSearchCV(gbr,param_grid)
+    #     'n_estimators': [200,300,400,500,600],
+    #     'max_depth': [2,4,6,8],
+    #     'max_features': ['auto','sqrt','log2']
+    #     }
+    # gbr_grid = GridSearchCV(gbr,param_grid, n_jobs=-1, verbose=1)
     # gbr_grid.fit(X_train, y_train)
     #
     # best = gbr_grid.best_estimator_

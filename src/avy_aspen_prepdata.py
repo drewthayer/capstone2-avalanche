@@ -13,7 +13,6 @@ import pickle
 #
 if __name__=='__main__':
     # paths
-    # define path from current
     current = os.getcwd()
     caic_dir = os.path.dirname(''.join([current,'/../data-caic/']))
     noaa_dir = os.path.dirname(''.join([current,'/../data-noaa/']))
@@ -64,6 +63,9 @@ if __name__=='__main__':
     avy_df = pd.read_csv(fname)
     avy_df['datetime'] = pd.to_datetime(avy_df.Date)
     avy_df.set_index(avy_df.datetime, inplace=True)
+
+
+
     avy_aspen = avy_df[avy_df['BC Zone'] == 'Aspen']
     ''' df size: 10128 x 40 '''
 
@@ -86,13 +88,20 @@ if __name__=='__main__':
     merge1 = pd.merge(airport_df, snow_df0, how='left', left_index=True, right_index=True)
     merge2 = pd.merge(merge1, avy_aspen, how='left', left_index=True, right_index=True)
 
+    ''' julian day feature '''
+    merge2['dt'] = merge2.index
+    merge2['jday'] = merge2.dt.apply(lambda x: x.timetuple().tm_yday)
+
     ''' option: only D2+ avalanches'''
     merge2['D2_up'] = np.where(np.in1d(merge2.Dsize, ['D2','D2.5','D3','D3.5','D4']), merge2['#'], 0)
 
+    ''' option: remove summer '''
+    merge2['month'] = merge2.index.month
+    nosummer = merge2[(merge2.month < 6) | (merge2.month >= 11)]
 
     ''' clip at start date of avy record '''
     startday = '2010-11-15'
-    clipped = merge2[merge2.index > pd.to_datetime(startday)]
+    clipped = nosummer[nosummer.index > pd.to_datetime(startday)]
 
     ''' select features and target '''
     feature_list = [
@@ -101,7 +110,7 @@ if __name__=='__main__':
        'Daily_peak_wind', 'Peak_wind_direction', 'SustainedWindSpeed',
        'SustainedWindDirection', 'swe_start_m', 'airtemp_max_C', 'airtemp_min_C',
        'airtemp_mean_C', 'precip_start_m',
-       'precip_incr_m','D2_up']
+       'precip_incr_m','jday','D2_up']
     data_df = clipped[feature_list]
     # define target and remove target nans
     ycol = 'D2_up'
@@ -117,7 +126,8 @@ if __name__=='__main__':
     # mask = X.applymap(np.isreal).sum()
 
     ''' save X,y '''
-    pickle.dump( X, open( "aspen_1_X_d2up.p", "wb" ) )
-    pickle.dump( y, open( "aspen_1_y_d2up.p", "wb" ) )
+    pickle.dump( X, open( "aspen_X_nosummer.p", "wb" ) )
+    pickle.dump( y, open( "aspen_y_nosummer.p", "wb" ) )
 
-    ''' only D2 + avalanches '''
+    ''' EDA '''
+    counts = avy_df.groupby(['BC Zone']).size().sort_values(ascending=False)
