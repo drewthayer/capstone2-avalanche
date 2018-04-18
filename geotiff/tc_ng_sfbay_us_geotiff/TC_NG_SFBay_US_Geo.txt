@@ -1,0 +1,30 @@
+TerraColor NextGen imagery is developed and copyrighted by 
+Earthstar Geographics LLC. This sample covers part of the San
+Francisco Bay area of California in the United States. The image
+may be freely used and distrubuted as long as it is accompanied
+by this metadata file. Metadata is as follows:
+
+NextGen image type: Standard
+Image format: GeoTIFF RGB
+Projection: Geographic (Lat/Long)
+Datum: WGS84
+Pixel size X: 0.0001388 decimal degrees (~ 15 meters)
+Pixel size Y: 0.0001388 decimal degrees (~ 15 meters)
+Uncompressed file size: 53.5 MB
+Landsat 8 bands used: RGB=4,3,2 (true color) plus band 8 for
+	pan sharpening
+
+Image UL Lat, Long: 38:03:08.03N, 122:43:07.65W
+Image LR Lat, Long: 37:27:08.03N, 122:07:07.65W
+
+For more information on TerraColor NextGen products, visit
+www.terracolor.net.  For questions, contact:
+
+Earthstar Geographics LLC
+1437 Morena Blvd.
+Suite 100-C
+San Diego, CA 92110
+
+Email: terracolor@es-geo.com
+Tel: 619-275-1701
+Fax: 619-275-1793

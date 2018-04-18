@@ -1,0 +1,107 @@
+Format version: NOHRSC GIS/RS raster file v1.1
+Data source: RUC2, NESDIS, etc.
+Created by module: sm_products
+Created by module comment: Not applicable
+Created year: 2003
+Created month: 12
+Created day: 1 
+Created hour: 10
+Created minute: 1 
+Created second: 1 
+Last modified by module: sm_products
+Last modified by module comment: Not applicable
+Last modified year: 2003
+Last modified month: 12
+Last modified day: 1 
+Last modified hour: 10
+Last modified minute: 1 
+Last modified second: 1 
+Satellite data: no
+Satellite name: Not applicable
+Satellite channel: 0
+Satellite data calibrated: no
+Description: Modeled melt rate, bottom of snow layers, 24-hour total
+Thematic: no
+Theme file: Not applicable
+Data units: Meters / 100000.000000
+Product code: 101250034 
+Attribute table: Not applicable
+Data file pathname: us_ssmv11044bS__T0024TTNATS2003120105DP000.dat
+Data type: integer
+Data bytes per pixel: 2
+Data intercept: 0.000000000000000               
+Data slope: 1.000000000000000               
+Minimum data value: 0.000000000000000               
+Maximum data value: 3561.000000000000000            
+No data value: -9999.000000000000000           
+Number of columns: 6935      
+Number of rows: 3351      
+Geographically corrected: yes
+Projected: no
+Projection file: Not applicable
+Horizontal datum: WGS84
+Horizontal precision: 0.008333333333333               
+Elevation above datum: no
+Vertical datum: Not applicable
+Vertical precision: 0.000000000000000               
+Benchmark column: 0         
+Benchmark row: 0         
+Benchmark x-axis coordinate: -124.729583333331703            
+Benchmark y-axis coordinate: 52.871249516804028              
+X-axis resolution: 0.008333333333333               
+Y-axis resolution: 0.008333333333333               
+X-axis offset: 0.003749999996645               
+Y-axis offset: -0.003750483193850              
+Minimum x-axis coordinate: -124.733749999998366            
+Maximum x-axis coordinate: -66.942083333334011             
+Minimum y-axis coordinate: 24.950416183471813              
+Maximum y-axis coordinate: 52.875416183470698              
+Start year: 2003
+Start month: 11
+Start day: 30
+Start hour: 6 
+Start minute: 0 
+Start second: 0 
+Stop year: 2003
+Stop month: 12
+Stop day: 1 
+Stop hour: 5 
+Stop minute: 0 
+Stop second: 0 
+Compressed: no
+Compression file: Not applicable
+Number of color tables: 0 
+Color table 01 descriptor: Not applicable
+Color table 02 descriptor: Not applicable
+Color table 03 descriptor: Not applicable
+Color table 04 descriptor: Not applicable
+Color table 05 descriptor: Not applicable
+Color table 06 descriptor: Not applicable
+Color table 07 descriptor: Not applicable
+Color table 08 descriptor: Not applicable
+Color table 09 descriptor: Not applicable
+Color table 10 descriptor: Not applicable
+Color table 11 descriptor: Not applicable
+Color table 12 descriptor: Not applicable
+Color table 13 descriptor: Not applicable
+Color table 14 descriptor: Not applicable
+Color table 15 descriptor: Not applicable
+Color table 16 descriptor: Not applicable
+Color table 01 file: Not applicable
+Color table 02 file: Not applicable
+Color table 03 file: Not applicable
+Color table 04 file: Not applicable
+Color table 05 file: Not applicable
+Color table 06 file: Not applicable
+Color table 07 file: Not applicable
+Color table 08 file: Not applicable
+Color table 09 file: Not applicable
+Color table 10 file: Not applicable
+Color table 11 file: Not applicable
+Color table 12 file: Not applicable
+Color table 13 file: Not applicable
+Color table 14 file: Not applicable
+Color table 15 file: Not applicable
+Color table 16 file: Not applicable
+Histogram: no
+Histogram file: Not applicable
