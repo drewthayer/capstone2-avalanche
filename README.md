@@ -14,6 +14,10 @@ avalanche observation data back to 1980:
 __weather data__
 
 ### EDA/ data trends:
+__locations:__
+<img alt="avy by location" src="/figs/2018_d3_landmarks.png" width='500'>
+__snow angle:__ (this is well understood science)
+<img alt="avy by location" src="/figs/2018_snow_angle.png" width='300'>
 
 ### preliminary modeling:
 __Data:__  
@@ -82,3 +86,9 @@ __model:__
  ('airtemp_mean_C', -0.0),
  ('precip_start_m', 0.0),
  ('precip_incr_m', 0.0)]
+
+wet bulb temp: The wet-bulb temperature is the lowest temperature which may be achieved by evaporative cooling of a water-wetted (or even ice-covered), ventilated surface.
+
+#### improvements:
+ - __more data!__ models need a longer data record (and more zones) to train
+__more flexible models__: hard to capture the highly variable nature of a stochastic natural process
