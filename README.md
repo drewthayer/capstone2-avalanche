@@ -283,3 +283,7 @@ gbr poly test rmse = 19.292
 _gradient boost with lag3, poly2_
  <img alt="less features"
   src="/figs/timelag/gbr_lag3_poly2.png" width='500'>
+
+poly 3:
+gbr poly training score = -0.394
+gbr poly test rmse = 18.502
