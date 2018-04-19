@@ -106,22 +106,29 @@ rfr test rmse = 16.441
 
  __Oversample low-probability avalanches__
 class imbalance problem :
+
 <img alt="less features"
  src="/figs/oversample/hist_numperday.png" width='300'>
+
  frequency of avys/day:
- n = 2004
- In [27]: counts
- Out[27]: {0: 1533, 1: 381, 2: 42, 3: 20, 4: 7, 5: 12, 6: 8}
+  - n = 2004
+  - In [27]: counts
+  - Out[27]: {0: 1533, 1: 381, 2: 42, 3: 20, 4: 7, 5: 12, 6: 8}
 
  balance to 1:
- n = 3977 if balanced to 1
- In [29]: factors
- Out[29]: {1: 1, 2: 9, 3: 19, 4: 54, 5: 31, 6: 47}
+  - n = 3977 if balanced to 1
+  - In [29]: factors
+  - Out[29]: {1: 1, 2: 9, 3: 19, 4: 54, 5: 31, 6: 47}
 
  balance to 0:
- n = 11522
- In [25]: factors
- Out[25]: {0: 1, 1: 4, 2: 36, 3: 76, 4: 219, 5: 127, 6: 191}
+  - n = 11522
+  - In [25]: factors
+  - Out[25]: {0: 1, 1: 4, 2: 36, 3: 76, 4: 219, 5: 127, 6: 191}
+
+<img alt="less features"
+   src="/figs/oversample/oversample_whoops.png" width='500'>
+
+
 
 __less features? worse__
 
@@ -130,8 +137,10 @@ aspen and leadville DAILYAverageWindSpeed
 
 linear L1 regression cval training score = -13.414
 linear L1 regression test rmse = 48.547
+
 gbr cval training score = -7.013
 gbr test rmse = 20.061
+
 rfr cval training score = -3.602
 rfr test rmse = 19.435
 
@@ -211,20 +220,21 @@ MSE: 3.9639, GCV: 3.9855, RSQ: 0.1060, GRSQ: 0.1013
 __polynomial spline the features:__
 
 finally starting to capture some of the behavior
+
 <img alt="less features"
  src="/figs/oversample/gbr_spline3.png" width='500'>
 
  poly 2:
- gbr poly training score = -6.985
-gbr poly test rmse = 19.931
+ - gbr poly training score = -6.985
+ - gbr poly test rmse = 19.931
 
  poly 3:
- gbr poly training score = -6.455
- gbr poly test rmse = 19.597
+ - gbr poly training score = -6.455
+ - gbr poly test rmse = 19.597
 
  poly 4:
- gbr poly training score = -6.507
- gbr poly test rmse = 19.742
+ - gbr poly training score = -6.507
+ - gbr poly test rmse = 19.742
 
 poly3:
  [('aspen_SustainedWindSpeed', 0.01668406401900523),
