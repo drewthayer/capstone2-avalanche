@@ -103,6 +103,7 @@ class-balanced gbr model:
 
 <img alt="less features"
  src="/figs/oversample/gbr_spline3.png" width='500'>
+
  _moving in the right direction..._
  - stochastic behavior: can now predict values > 2
  - still not a good fit
@@ -200,12 +201,14 @@ __selected model random forest regressor:__
 __next step:__ choose a threshold to maximize recall
 
 ## decisions for model implementation: accuracy, precision, recall
-_prediction range goes up to 6..._
+_true range goes up to 6, but prediction range doesn't..._
 
-<img alt="less features"
-  src="/figs/model_metrics/acc_rec_prec_rfr.png" width='400'>
+|a,c,r            |  roc |
+|:-------------------------:|:-------------------------:|
+|![](figs/model_metrics/acc_rec_prec_rfr.png)  |  ![](figs/model_metrics/ROC_rfr_gbr.png)|
 
-_...but performance hard to interpret at predictions >= 1_
+
+_...performance hard to interpret at predictions >= 1_
 
 __limit prediction range between 0 and 1:__
 <img alt="less features"
