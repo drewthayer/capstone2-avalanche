@@ -15,16 +15,20 @@ __weather data__
 SNOTEL sensor network:
 <img alt="snotel network" src="/pub_figs/co_swe_current.png" width='500'>
 
-Local Climatalogical Data (often airports)
-https://www.ncdc.noaa.gov/cdo-web/datatools/lcd
+<img alt="snotel network" src="/pub_figs/nrcs_snotel_eyak_ak.jpg" width='200'>
 
+_source: NRCS National Water and Climate Center, USDA_
+
+Local Climatalogical Data (commonly airports):
+<img alt="snotel network" src="/pub_figs/airport_weather_station.jpg" width='200'>
 
 ### EDA/ data trends:
-__locations:__
-<img alt="avy by location" src="/figs/2018_d3_landmarks.png" width='500'>
+__destructive size:__
+<img alt="avy by location" src="/figs/dsize.png" width='300'>
 
-__backcountry zones:__
-BC Zone
+_this modeling approach will consider avalanches D2 or greater_
+
+__D2+ avalanches by backcountry zone:__
 Northern San Juan        2998
 Front Range              1565
 Vail & Summit County     1337
@@ -39,14 +43,17 @@ Sangre de Cristo           22
 __snow angle:__ (this is well understood science)
 <img alt="avy by location" src="/figs/2018_snow_angle.png" width='300'>
 
-### preliminary modeling:
+### modeling strategy:
 __Data:__  
- - features: wind data from Aspen airport, airtemp and precip data from Independence Pass SNOTEL
- - target: Aspen Zone avalanches, # per day (size >= D2)
+ - _features:_ wind data from Aspen and Leadville airports, air temperature and precipitation data from Independence Pass SNOTEL station
+ - _target:_ Aspen Zone avalanches, # per day (size >= D2)
+ - _train and test split:_ June 2016
+
 <img alt='timeseries' src='figs/aspen_avys_d2plus.png' width='500'>
 
-__model:__
- - train/test split: June 2015
+
+__preliminary model:__
+ - train/test split: June 2016
  - linear regression cval training score = -0.013
  - linear regression test rmse = 16.840
  - linear L1 regression cval training score = -0.025
@@ -55,9 +62,7 @@ __model:__
  - gbr test rmse = 19.079
 <img alt="first model" src="/figs/aspen_avys_preds.png" width='500'>
 
-#### improvements:
- - __more data!__ models need a longer data record (and more zones) to train
-__more flexible models__: hard to capture the highly variable nature of a stochastic natural process
+
 
 __remove summer, add jday__:
 linear regression cval training score = -0.126
@@ -257,18 +262,94 @@ poly 3:
 gbr poly training score = -0.394
 gbr poly test rmse = 18.502
 
-### model tuning
-grid search for rfr
+## model selection 1: train/test performance
+__best model:__ random forest regressor
+- features: balanced classes, 4-day time-lagged features
+- model performance:
+  - out-of-bag training score = 0.992
+  - test RMSE = 16.392
 
-top model
+<img alt="less features"
+ src="/figs/timelag/rfr_lag4_label.png" width='500'>
 
-feature importance plot
+__second best model:__ gradient boosting regressor _(with same features)_
+ - model performance
+   - 10-fold cross-validated training score = -0.217
+   - test RMSE = 20.737
+
+<img alt="less features"
+ src="/figs/timelag/gbr_lag4_label.png" width='500'>
+
+## model selection 2: use of feature space
+__random forest regressor:__
+<img alt="less features"
+ src="/figs/timelag/rfr_lag4_feats.png" width='300'>
+
+ __gradient boosting regressor:__
+ <img alt="less features"
+  src="/figs/timelag/gbr_lag4_feats.png" width='300'>
 
 
-### model implementation
-classify: during test period, 1 if avys >= 1, else 0
+## model selection 3: receiver operating characteristic
+__the goal:__ predict the risk of avalanches
+ - a predicted __risk__ is more useful than a predicted #
 
-compare preds to true -> confusion matrix
-make ROC plot
 
-repeat for thresholds 1-6: 6 ROC curves from most -> least conservative
+__classify predictions:__ ordinal --> binary
+ - select threshold
+ - if number of avalanches >= threshold, 1, else 0
+ - compare predictions and true record of events
+
+__Receiver Operating Characteristic:__
+ <img alt="less features"
+   src="/figs/model_metrics/ROC_rfr_gbr_t1.png" width='300'>
+
+ - ROC compares True Positive rate to False Positive rate
+ - for risk prediction:
+   - false positives are OK
+   - true positives must be maximized
+   - false negatives must be penalized (danger zone)
+     - maximize recall
+
+__model selection summary:__
+  - random forest regressor
+  - choose a threshold to maximize recall
+
+## decisions for model implementation: accuracy, precision, recall
+_prediction range goes up to 6..._
+
+<img alt="less features"
+  src="/figs/model_metrics/acc_rec_prec_rfr.png" width='300'>
+_...but performance hard to interpret at predictions >= 1_
+
+__limit prediction range between 0 and 1:__
+<img alt="less features"
+  src="/figs/model_metrics/acc_rec_prec_rfr_t1.png" width='300'>
+
+__most accurate and precise model:__ threshold = 0.75
+ - best if your goal is to see an avalanche
+ - accuracy = 0.782
+ - precision = 0.632
+ - recall= 0.381
+
+|          |predicted 0| predicted 1|
+|----------|----------|-----------|
+|__actual 0__   |       298|        70|
+|__actual 1__   |        25|         43|
+
+
+
+__balanced model with high recall:__ threshold = 0.46
+ - most conservative model for risk forecasting
+ - recall= 0.735
+ - accuracy = 0.713
+ - precision = 0.466
+
+|          |predicted 0| predicted 1|
+|----------|----------|-----------|
+|__actual 0__   |       228|        30|
+|__actual 1__   |        95|         83|
+
+### improvements:
+ - __more data!__ models need a longer data record (and more backcountry zones) to train
+__more flexible models__: hard to capture the highly variable nature of a stochastic natural process

@@ -178,8 +178,15 @@ if __name__=='__main__':
 
     # feature importance plot
     names = X_train.columns
-    filename = 'rfr_lag4_feats'
-    feat_importance_plot(rfr,names,filename,color='g',alpha=0.5,fig_size=(10,10),dpi=250)
+    filename = 'gbr_lag4_feats'
+    feat_importance_plot(gbr,names,filename,color='teal',alpha=0.5,fig_size=(10,10),dpi=250)
+
+    # training plot
+    fig, ax = plt.subplots(1,1,figsize=(6,4))
+    ax.plot(train_score,'-k')
+    ax.set_xlabel('boosting stage')
+    ax.set_ylabel('training score')
+    ax.set_title('Gradient Boosting Regressor training')
 
     # save output
     true = y_test.values.reshape(-1,1)
@@ -226,8 +233,3 @@ if __name__=='__main__':
     # ax.legend()
     # plt.show()
     #
-    # fig, ax = plt.subplots(1,1,figsize=(6,4))
-    # ax.plot(train_score,'-k')
-    # ax.set_xlabel('boosting stage')
-    # ax.set_ylabel('training score')
-    # ax.set_title('Gradient Boosting Regressor training')
