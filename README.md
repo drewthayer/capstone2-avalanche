@@ -115,17 +115,17 @@ __other experiments:__
  __incorporate time-series information: feature engineering__
  - processes that create avalanches are highly time-sequence dependent
  - strategy: engineer features for past days over time window
-   - for day $i$ in $n$ days:
-   - for every feature $X_{i}$ add  $X_{(i-1)}$, $X_{(i-2)}$, $X_{(i-3)}$, ...
+
+ <img alt="caic zones" src="/pub_figs/formula_1.png" width='300'>
 
 gradient boost, lag = 3 days:
-model             |  training
+|model             |  training|
 |:-------------------------:|:-------------------------:|
 |![](figs/timelag/gbr_lag3.png)  |  ![](figs/timelag/gbr_lag4_train.png)|
 
 
 random forest lag, = 3 days:
-model             |  |
+|model             |  |
 |:-------------------------:|:-------------------------:|
 |![](figs/timelag/rfr_lag3.png)  |  |
 
@@ -139,16 +139,16 @@ model             |  |
 ## model selection 1: train/test performance
 - features: balanced classes, 4-day time-lagged features
 
-random forest regressor            |  gradient boosting regressor
-:-------------------------:|:-------------------------:
+|random forest regressor            |  gradient boosting regressor|
+|:-------------------------:|:-------------------------:|
 |   out-of-bag training score = 0.992 | cross-validated training score = -0.217 |
 |  test RMSE = 16.392 | test RMSE = 20.737 |
-![](figs/timelag/rfr_lag4_label.png)  |  ![](figs/timelag/gbr_lag4_label.png)
+|![](figs/timelag/rfr_lag4_label.png)  |  ![](figs/timelag/gbr_lag4_label.png) |
 
 ## model selection 2: use of feature space
-random forest regressor             |  gradient boosting regressor
-:-------------------------:|:-------------------------:
-![](figs/timelag/rfr_lag4_feats.png)  |  ![](figs/timelag/gbr_lag4_feats.png)
+|random forest regressor             |  gradient boosting regressor |
+|:-------------------------:|:-------------------------:|
+|![](figs/timelag/rfr_lag4_feats.png)  |  ![](figs/timelag/gbr_lag4_feats.png)|
 
  - random forest model can be trained with fewer features
 
@@ -219,7 +219,7 @@ __balanced model with high recall:__ threshold = 0.46
 ### improvements:
 __more data!__ models need a longer data record (and more backcountry zones) to train
  - obervation data are provided by public...biased towards weekends and popular areas
- - weather data: hard to find old records 
+ - weather data: hard to find old records
 
 __more flexible models__: hard to capture the highly variable nature of a stochastic natural process
   - random forest regressor is not tuned yet
