@@ -6,13 +6,16 @@ Readme
 __CAIC Avalanche data__
 
 10 backcountry zones:
+
 <img alt="caic zones" src="/pub_figs/CAIC_zones.png" width='300'>
 
 avalanche observation data back to 1980:
+
 <img alt="caic zones" src="/pub_figs/caic_example.png" width='500'>
 
 __weather data__
 SNOTEL sensor network:
+
 <img alt="snotel network" src="/pub_figs/co_swe_current.png" width='500'>
 
 <img alt="snotel network" src="/pub_figs/nrcs_snotel_eyak_ak.jpg" width='200'>
@@ -22,7 +25,7 @@ _source: NRCS National Water and Climate Center, USDA_
 Local Climatalogical Data (commonly airports):
 <img alt="snotel network" src="/pub_figs/airport_weather_station.jpg" width='200'>
 
-### EDA/ data trends:
+### avalanche trends:
 __destructive size:__
 <img alt="avy by location" src="/figs/dsize.png" width='300'>
 
@@ -40,8 +43,6 @@ __D2+ avalanches by backcountry zone:__
 - Grand Mesa                155
 - Sangre de Cristo           22
 
-__snow angle:__ (this is well understood science)
-<img alt="avy by location" src="/figs/2018_snow_angle.png" width='300'>
 
 ### modeling strategy:
 
@@ -110,7 +111,7 @@ __other experiments:__
  __incorporate time-series information: feature engineering__
  - processes that create avalanches are highly time-sequence dependent
  - strategy: engineer features for past days over time window
-   - for day $i$ in $n$ days: 
+   - for day $i$ in $n$ days:
    - for every feature $X_{i}$ add  $X_{(i-1)}$, $X_{(i-2)}$, $X_{(i-3)}$, ...
 
 gradient boost, lag = 3 days:
