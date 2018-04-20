@@ -109,12 +109,10 @@ __other experiments:__
    - e.g. for day i: for every feature Xi add  X(i-1), X(i-2), X(i-3)
 
 gradient boost, lag = 3 days:
+model             |  training
+:-------------------------:|:-------------------------:
+![](figs/timelag/gbr_lag3.png)  |  ![](figs/timelag/gbr_lag4_train.png)
 
-<img alt="less features"
- src="/figs/timelag/gbr_lag3.png" width='500'>
-
- <img alt="less features"
-  src="/figs/timelag/gbr_lag4_train.png" width='300'>
 
 random forest lag, = 3 days:
 
@@ -129,31 +127,19 @@ random forest lag, = 3 days:
 
 
 ## model selection 1: train/test performance
-__best model:__ random forest regressor
 - features: balanced classes, 4-day time-lagged features
-- model performance:
-  - out-of-bag training score = 0.992
-  - test RMSE = 16.392
 
-<img alt="less features"
- src="/figs/timelag/rfr_lag4_label.png" width='500'>
-
-__second best model:__ gradient boosting regressor _(with same features)_
- - model performance
-   - 10-fold cross-validated training score = -0.217
-   - test RMSE = 20.737
-
-<img alt="less features"
- src="/figs/timelag/gbr_lag4_label.png" width='500'>
+random forest regressor            |  gradient boosting regressor
+:-------------------------:|:-------------------------:
+|   out-of-bag training score = 0.992 | cross-validated training score = -0.217 |
+|  test RMSE = 16.392 | test RMSE = 20.737 |
+![](figs/timelag/rfr_lag4_label.png)  |  ![](figs/timelag/gbr_lag4_label.png)
 
 ## model selection 2: use of feature space
-__random forest regressor:__
-<img alt="less features"
- src="/figs/timelag/rfr_lag4_feats.png" width='300'>
+random forest regressor             |  gradient boosting regressor
+:-------------------------:|:-------------------------:
+![](figs/timelag/rfr_lag4_feats.png)  |  ![](figs/timelag/gbr_lag4_feats.png)
 
- __gradient boosting regressor:__
- <img alt="less features"
-  src="/figs/timelag/gbr_lag4_feats.png" width='300'>
  - random forest model can be trained with fewer features
 
 ## model selection 3: receiver operating characteristic
@@ -168,7 +154,7 @@ __classify predictions:__ ordinal --> binary
 
 __Receiver Operating Characteristic:__
  <img alt="less features"
-   src="/figs/model_metrics/ROC_rfr_gbr_t1.png" width='300'>
+   src="/figs/model_metrics/ROC_rfr_gbr_t1.png" width='600'>
 
  - ROC compares True Positive rate to False Positive rate
  - for risk prediction:
@@ -188,12 +174,13 @@ __next step:__ choose a threshold to maximize recall
 _prediction range goes up to 6..._
 
 <img alt="less features"
-  src="/figs/model_metrics/acc_rec_prec_rfr.png" width='300'>
+  src="/figs/model_metrics/acc_rec_prec_rfr.png" width='400'>
+
 _...but performance hard to interpret at predictions >= 1_
 
 __limit prediction range between 0 and 1:__
 <img alt="less features"
-  src="/figs/model_metrics/acc_rec_prec_rfr_t1.png" width='300'>
+  src="/figs/model_metrics/acc_rec_prec_rfr_t1.png" width='600'>
 
 __most accurate and precise model:__ threshold = 0.75
  - best if your goal is to see an avalanche
