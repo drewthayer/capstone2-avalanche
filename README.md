@@ -2,7 +2,7 @@ Readme
 ## Empirical avalanche prediction in Colorado:
 #### Can a machine-learning model trained on historical climatic and avalanche data augment prediction of avalanche risk?
 
-<img alt="caic zones" src="/pub_figs/skier_avy.png" width='500'>
+<img alt="avy" src="/pub_figs/skier_avy.png" width='500'>
 
 _source: Staying Alive in Avalanche Terrain_
 
