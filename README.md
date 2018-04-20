@@ -243,7 +243,9 @@ __balanced model with high recall:__ threshold = 0.46
 ### improvements:
 __more data!__ models need a longer data record (and more backcountry zones) to train
  - obervation data are provided by public...biased towards weekends and popular areas
- - weather data: hard to find old records
+ - wind data: hard to find old records
+ - much more SNOTEL data available
+   - brings its own data size problems... _dimensionality reduction?_
 
 __more flexible models__: hard to capture the highly variable nature of a stochastic natural process
   - random forest regressor is not tuned yet
@@ -255,4 +257,5 @@ __winter/spring domains:__
 
  |wind slab (winter)             |  loose wet (spring) |
  |:-------------------------:|:-------------------------:|
+ | wind loading, cold night temps | rapid warming, nights too warm |
  |![](pub_figs/avy_eg)  |  ![](pub_figs/loosewet.png)|
