@@ -2,6 +2,8 @@ Readme
 ## Empirical avalanche prediction in Colorado:
 #### Can a machine-learning model trained on historical climatic and avalanche data augment prediction of avalanche risk?
 
+<img alt="caic zones" src="/pub_figs/avy_eg" width='500'>
+
 ### Data:
 __CAIC Avalanche data__
 
@@ -23,10 +25,12 @@ SNOTEL sensor network:
 _source: NRCS National Water and Climate Center, USDA_
 
 Local Climatalogical Data (commonly airports):
-<img alt="snotel network" src="/pub_figs/airport_weather_station.jpg" width='200'>
+
+<img alt="airport station" src="/pub_figs/airport_weather_station.jpg" width='200'>
 
 ### avalanche trends:
 __destructive size:__
+
 <img alt="avy by location" src="/figs/dsize.png" width='300'>
 
 _this modeling approach will consider avalanches D2 or greater_
@@ -213,5 +217,10 @@ __balanced model with high recall:__ threshold = 0.46
 |__actual 1__   |        95|         83|
 
 ### improvements:
- - __more data!__ models need a longer data record (and more backcountry zones) to train
+__more data!__ models need a longer data record (and more backcountry zones) to train
+ - obervation data are provided by public...biased towards weekends and popular areas
+ - weather data: hard to find old records 
+
 __more flexible models__: hard to capture the highly variable nature of a stochastic natural process
+  - random forest regressor is not tuned yet
+  - could be good candidate for RNN with LSTM due to time-dependency
