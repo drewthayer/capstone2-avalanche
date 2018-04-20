@@ -29,21 +29,24 @@ __destructive size:__
 _this modeling approach will consider avalanches D2 or greater_
 
 __D2+ avalanches by backcountry zone:__
-Northern San Juan        2998
-Front Range              1565
-Vail & Summit County     1337
-Aspen                    1210
-Gunnison                 1188
-Sawatch Range             806
-Southern San Juan         585
-Steamboat & Flat Tops     186
-Grand Mesa                155
-Sangre de Cristo           22
+- Northern San Juan        2998
+- Front Range              1565
+- Vail & Summit County     1337
+- Aspen                    1210
+- Gunnison                 1188
+- Sawatch Range             806
+- Southern San Juan         585
+- Steamboat & Flat Tops     186
+- Grand Mesa                155
+- Sangre de Cristo           22
 
 __snow angle:__ (this is well understood science)
 <img alt="avy by location" src="/figs/2018_snow_angle.png" width='300'>
 
 ### modeling strategy:
+
+<img alt="caic zones" src="/pub_figs/aspen_closeup.png" width='200'>
+
 __Data:__  
  - _features:_ wind data from Aspen and Leadville airports, air temperature and precipitation data from Independence Pass SNOTEL station
  - _target:_ Aspen Zone avalanches, # per day (size >= D2)
@@ -58,7 +61,9 @@ __improvements to feature matrix:__
 __preliminary linear model:__
  - linear L1 regression cval training score = -0.025
  - linear L1 regression test rmse = 16.871
+
 <img alt="first model" src="/figs/aspen_lasso.png" width='500'>
+
  - avalanches are stochastic phenomena dependent on non-linear processes
  - linear model can 'guess low' every time, high penalty for departure from mean
  - need a more flexible model
@@ -69,18 +74,17 @@ __preliminary gradient boosting regression model:__
  - gbr cval training score = -0.129
  - gbr test rmse = 16.683
 
-<img alt="first model"
- src="/figs/nosummer/aspen_nosummer_preds_gbr_best.png" width='500'>
+ |model             |  training |
+ |:-------------------------:|:-------------------------:|
+ |![](figs/nosummer/aspen_nosummer_preds_gbr_best.png)  |  ![](figs/nosummer/gbr_training.png)|
+
  - starting to capture non-linear behavior
  - takes many boosting stages (600+) to train the model:
-<img alt="first model"
- src="/figs/nosummer/gbr_training.png" width='500'>
-
-
 
 
  __Addressing the class imbalance problem:__
  -  classes are highly imbalanced
+
 <img alt="less features"
  src="/figs/oversample/hist_numperday.png" width='300'>
 
@@ -106,18 +110,19 @@ __other experiments:__
  __incorporate time-series information: feature engineering__
  - processes that create avalanches are highly time-sequence dependent
  - strategy: engineer features for past days over time window
-   - e.g. for day i: for every feature Xi add  X(i-1), X(i-2), X(i-3)
+   - for day $i$ in $n$ days: 
+   - for every feature $X_{i}$ add  $X_{(i-1)}$, $X_{(i-2)}$, $X_{(i-3)}$, ...
 
 gradient boost, lag = 3 days:
 model             |  training
-:-------------------------:|:-------------------------:
-![](figs/timelag/gbr_lag3.png)  |  ![](figs/timelag/gbr_lag4_train.png)
+|:-------------------------:|:-------------------------:|
+|![](figs/timelag/gbr_lag3.png)  |  ![](figs/timelag/gbr_lag4_train.png)|
 
 
 random forest lag, = 3 days:
-
-<img alt="less features"
-  src="/figs/timelag/rfr_lag3.png" width='500'>
+model             |  |
+|:-------------------------:|:-------------------------:|
+|![](figs/timelag/rfr_lag3.png)  |  |
 
  _now we're getting somewhere..._
   - much better accuracy
