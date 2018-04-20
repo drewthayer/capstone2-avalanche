@@ -72,7 +72,7 @@ __preliminary gradient boosting regression model:__
 <img alt="first model"
  src="/figs/nosummer/aspen_nosummer_preds_gbr_best.png" width='500'>
  - starting to capture non-linear behavior
- - takes many boosting stages (600+) to train the model:
+ - takes many boosting stages to train the model:
 <img alt="first model"
  src="/figs/nosummer/gbr_training.png" width='500'>
 
@@ -94,8 +94,7 @@ class-balanced gbr model:
 
 <img alt="less features"
  src="/figs/oversample/gbr_spline3.png" width='500'>
- _moving in the right direction..._
- - stochastic behavior: can now predict values > 2
+ - can now predict values > 2
  - still not a good fit
 
 __other experiments:__
@@ -108,24 +107,42 @@ __other experiments:__
  - strategy: engineer features for past days over time window
    - e.g. for day i: for every feature Xi add  X(i-1), X(i-2), X(i-3)
 
-gradient boost, lag = 3 days:
+_gradient boost lag 3_
+ - gbr cval training score = -0.217
+ - gbr test rmse = 20.737
 
 <img alt="less features"
  src="/figs/timelag/gbr_lag3.png" width='500'>
 
- <img alt="less features"
-  src="/figs/timelag/gbr_lag4_train.png" width='300'>
-
-random forest lag, = 3 days:
+_random forest lag 3_
+- rfr out-of-bag train score = 0.990
+- rfr test rmse = 17.665
 
 <img alt="less features"
   src="/figs/timelag/rfr_lag3.png" width='500'>
 
- _now we're getting somewhere..._
-  - much better accuracy
-  - training faster
+_gradient boost lag 4_
+ - gbr cval training score = -0.217
+ - gbr test rmse = 20.737
 
- process: test models with time lags from 1 to 5 days
+<img alt="less features"
+ src="/figs/timelag/gbr_lag4.png" width='500'>
+
+_random forest lag 4_
+- rfr out-of-bag train score = 0.990
+- rfr test rmse = 17.665
+
+<img alt="less features"
+  src="/figs/timelag/rfr_lag4.png" width='500'>
+
+_random forest lag 4_
+
+- rfr out-of-bag train score = 0.992
+- rfr test rmse = 16.392
+
+_random forest lag 5_
+rfr test rmse = 16.881
+oob = 0.993
 
 
 ## model selection 1: train/test performance
@@ -154,7 +171,7 @@ __random forest regressor:__
  __gradient boosting regressor:__
  <img alt="less features"
   src="/figs/timelag/gbr_lag4_feats.png" width='300'>
- - random forest model can be trained with fewer features
+
 
 ## model selection 3: receiver operating characteristic
 __the goal:__ predict the risk of avalanches
@@ -177,12 +194,9 @@ __Receiver Operating Characteristic:__
    - false negatives must be penalized (danger zone)
      - maximize recall
 
-__selected model random forest regressor:__
-  - better ROC metrics (higher accuracy and recall)
-  - can be trained with fewer features
-  - doesn't predict negative values
-
-__next step:__ choose a threshold to maximize recall
+__model selection summary:__
+  - random forest regressor
+  - choose a threshold to maximize recall
 
 ## decisions for model implementation: accuracy, precision, recall
 _prediction range goes up to 6..._
