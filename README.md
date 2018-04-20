@@ -127,9 +127,7 @@ gradient boost, lag = 3 days:
 
 random forest lag, = 3 days:
 
-|model             |  |
-|:-------------------------:|:-------------------------:|
-|![](figs/timelag/rfr_lag3.png)  |  |
+<img alt="caic zones" src="/figs/timelag/rfr_lag3.png" width='300'>
 
  _now we're getting somewhere..._
   - much better accuracy
@@ -169,7 +167,7 @@ random forest lag, = 3 days:
 - notes:
   - day-of-year, # of avalanches, wind speed, and air temp
   - no precip
-  - high and low air temps: winter/spring domain problem 
+  - high and low air temps: winter/spring domain problem
 
 
 ## model selection 3: receiver operating characteristic
@@ -183,6 +181,7 @@ __classify predictions:__ ordinal --> binary
  - compare predictions and true record of events
 
 __Receiver Operating Characteristic:__
+
  <img alt="less features"
    src="/figs/model_metrics/ROC_rfr_gbr_t1.png" width='600'>
 
@@ -244,3 +243,11 @@ __more data!__ models need a longer data record (and more backcountry zones) to 
 __more flexible models__: hard to capture the highly variable nature of a stochastic natural process
   - random forest regressor is not tuned yet
   - could be good candidate for RNN with LSTM due to time-dependency
+
+__winter/spring domains:__
+
+ - these avalanches happen for very different reasons...
+
+ |wind slab (winter)             |  loose wet (spring) |
+ |:-------------------------:|:-------------------------:|
+ |![](pub_figs/avy_eg)  |  ![](pub_figs/loosewet.png)|
