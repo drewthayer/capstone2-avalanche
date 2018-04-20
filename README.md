@@ -26,7 +26,7 @@ _source: NRCS National Water and Climate Center, USDA_
 
 Local Climatalogical Data (commonly airports):
 
-<img alt="airport station" src="/pub_figs/airport_weather_station.jpg" width='200'>
+<img alt="airport station" src="/pub_figs/airport_weather_station.JPG" width='200'>
 
 ### avalanche trends:
 __destructive size:__
@@ -116,15 +116,17 @@ __other experiments:__
  - processes that create avalanches are highly time-sequence dependent
  - strategy: engineer features for past days over time window
 
- <img alt="caic zones" src="/pub_figs/formula_1.png" width='300'>
+ <img alt="caic zones" src="/pub_figs/formula_1.png" width='500'>
 
 gradient boost, lag = 3 days:
+
 |model             |  training|
 |:-------------------------:|:-------------------------:|
 |![](figs/timelag/gbr_lag3.png)  |  ![](figs/timelag/gbr_lag4_train.png)|
 
 
 random forest lag, = 3 days:
+
 |model             |  |
 |:-------------------------:|:-------------------------:|
 |![](figs/timelag/rfr_lag3.png)  |  |
@@ -151,6 +153,24 @@ random forest lag, = 3 days:
 |![](figs/timelag/rfr_lag4_feats.png)  |  ![](figs/timelag/gbr_lag4_feats.png)|
 
  - random forest model can be trained with fewer features
+
+ - top features:
+   - __day-of-year__
+   - number of __avalanches__ yesterday
+   - nightly __low air temp__ last night
+   - peak __wind speed__ at Aspen airport
+   - nightly __low air temp__ 4 days ago
+   - number of __avalanches__ 4 days ago
+   - peak __wind speed__ at Leadville airport
+   - sustained __wind speed__ at Leadville 4 days ago
+   - sustained __wind speed__ at Aspen 4 days ago
+   - daily __high air temp__ 4 days ago
+
+- notes:
+  - day-of-year, # of avalanches, wind speed, and air temp
+  - no precip
+  - high and low air temps: winter/spring domain problem 
+
 
 ## model selection 3: receiver operating characteristic
 __the goal:__ predict the risk of avalanches
