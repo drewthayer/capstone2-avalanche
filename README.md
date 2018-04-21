@@ -259,3 +259,33 @@ __winter/spring domains:__
  |:-------------------------:|:-------------------------:|
  | wind loading, cold night temps | rapid warming, nights too warm |
  |![](pub_figs/avy_eg)  |  ![](pub_figs/loosewet.png)|
+
+
+ contd...
+
+ rfr tuning: barely helps
+
+- rfr out-of-bag train score = 0.989
+- rfr test rmse = 16.634
+
+gbr tuning
+{'loss': 'lad',
+ 'max_depth': 6, (5 or 6)
+ 'max_features': 'log2',
+ 'min_samples_leaf': 4,
+ 'min_samples_split': 4, (4 or 6)
+ 'n_estimators': 600,
+ 'subsample': 0.7}
+gbr cval training score = -0.124
+gbr test rmse = 19.933
+
+gbr tuning again
+{'loss': 'lad',
+ 'max_depth': 5,
+ 'max_features': 'log2',
+ 'min_samples_leaf': 4,
+ 'min_samples_split': 6,
+ 'n_estimators': 600,
+ 'subsample': 0.7}
+gbr cval training score = -0.021
+gbr test rmse = 19.046

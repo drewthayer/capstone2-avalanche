@@ -116,8 +116,16 @@ if __name__=='__main__':
     X_test = test_df.copy()
     y_test = X_test.pop(ycol)
 
-    # ''' random forest '''
-    # rfr = RandomForestRegressor(n_estimators = 300, n_jobs = -1, oob_score=True)
+    ''' random forest '''
+    # best_params = {'criterion': 'mse',
+    #     'max_depth': 14,
+    #     'max_features': 'auto',
+    #     'min_samples_leaf': 2,
+    #     'min_samples_split': 4,
+    #     'n_estimators': 500,
+    #     'n_jobs': -1,
+    #     'oob_score':True}
+    # rfr = RandomForestRegressor(**best_params)
     # rfr.fit(X_train, y_train)
     # # metrics
     # oob = rfr.oob_score_
@@ -147,73 +155,85 @@ if __name__=='__main__':
     # true = y_test.values.reshape(-1,1)
     # predicted = preds_rfr.reshape(-1,1)
     # output = np.concatenate((true, predicted), axis=1)
-    # pickle.dump(output, open('output_rfr.p', 'wb'))
+    # pickle.dump(output, open('output_rfr_best1.p', 'wb'))
 
-    '''grid search for random forest regressor'''
-    param_grid_gbr = {
-        'loss': ['ls', 'lad', 'huber', 'quantile'],
-        'n_estimators': [200,300,400,500,600],
-        'max_depth': [2,4,6,8],
-        'max_features': ['auto','sqrt','log2']
-        }
-    param_grid_rfr = {
-        'n_estimators': [200,400,600],
-        'criterion': ['mse','mae'],
-        'max_features': ['auto','sqrt','log2'],
-        'min_samples_split': [2,3],
-        'min_samples_leaf': [1,2],
-    }
-    model = RandomForestRegressor()
-    grid = GridSearchCV(model, param_grid_rfr, n_jobs=-1, verbose=2)
-    grid.fit(X_train, y_train)
+    '''grid search'''
+    # param_grid_gbr = {
+    #     'loss': ['lad'],
+    #     'n_estimators': [600],
+    #     'max_depth': [5,6,7],
+    #     'min_samples_split': [4, 6, 8, 10, 12],
+    #     'min_samples_leaf': [4, 6, 8, 10, 12],
+    #     'max_features': ['log2'],
+    #     'subsample':[0.7]
+    #     }
+    # param_grid_rfr = {
+    #     'n_estimators': [500],
+    #     'criterion': ['mse'],
+    #     'max_features': ['auto'],
+    #     'min_samples_split': [2, 3, 4, 5],
+    #     'min_samples_leaf': [2],
+    #     'max_depth': [14],
+    #     }
+    # #model = RandomForestRegressor()
+    # model = GradientBoostingRegressor()
+    # grid = GridSearchCV(model, param_grid_gbr, n_jobs=-1, verbose=1)
+    # grid.fit(X_train, y_train)
+    #
+    # best_model = grid.best_estimator_
+    # best_params = grid.best_params_
 
-    best_model = grid.best_estimator_
-    best_params = grid.best_params_
 
 
+    ''' gradient boosting regressor '''
+    best_params = {'loss': 'lad', 'max_depth': 6, 'max_features': 'log2', 'n_estimators': 600}
+    best_params_2 = {'loss': 'lad',
+ 'max_depth': 6,
+ 'max_features': 'log2',
+ 'min_samples_leaf': 4,
+ 'min_samples_split': 6,
+ 'n_estimators': 800,
+ 'subsample': 0.7}
+    gbr = GradientBoostingRegressor(**best_params_2)
 
-    # ''' gradient boosting regressor '''
-    # best_params = {'loss': 'lad', 'max_depth': 6, 'max_features': 'log2', 'n_estimators': 600}
-    # gbr = GradientBoostingRegressor(**best_params)
-    #
-    # gbr.fit(X_train,y_train)
-    # score = cross_val_score(gbr, X_train, y_train, cv=10, n_jobs=-1)
-    # print('gbr cval training score = {:0.3f}'.format(np.mean(score)))
-    #
-    # preds_gbr = gbr.predict(X_test)
-    # rmse = np.sqrt(np.sum((y_test - preds_gbr)**2))
-    # print('gbr test rmse = {:0.3f}'.format(rmse))
-    #
-    # #oob = gbr.oob_improvement_
-    # train_score = gbr.train_score_
-    # importances_gbr = gbr.feature_importances_
-    #
-    # # plot
-    # fig, ax = plt.subplots(1,1,figsize=(6,4))
-    # h1 = ax.plot(range(len(y_test)),y_test,'b', label='actual')
-    # h2 = ax.plot(range(len(preds_gbr)),preds_gbr,'r', label='predicted - gbr')
-    # ax.set_ylabel('daily # of avalanches')
-    # ax.set_title('Aspen, CO: avalanches >= D2')
-    # ax.legend()
-    # plt.show()
-    #
-    # # feature importance plot
-    # names = X_train.columns
-    # filename = 'gbr_lag4_feats'
-    # feat_importance_plot(gbr,names,filename,color='teal',alpha=0.5,fig_size=(10,10),dpi=250)
-    #
-    # # training plot
-    # fig, ax = plt.subplots(1,1,figsize=(6,4))
-    # ax.plot(train_score,'-k')
-    # ax.set_xlabel('boosting stage')
-    # ax.set_ylabel('training score')
-    # ax.set_title('Gradient Boosting Regressor training')
-    #
-    # # save output
-    # true = y_test.values.reshape(-1,1)
-    # predicted = preds_gbr.reshape(-1,1)
-    # output = np.concatenate((true, predicted), axis=1)
-    # pickle.dump(output, open('output_rgbr.p', 'wb'))
+    gbr.fit(X_train,y_train)
+    score = cross_val_score(gbr, X_train, y_train, cv=10, n_jobs=-1)
+    print('gbr cval training score = {:0.3f}'.format(np.mean(score)))
+
+    preds_gbr = gbr.predict(X_test)
+    rmse = np.sqrt(np.sum((y_test - preds_gbr)**2))
+    print('gbr test rmse = {:0.3f}'.format(rmse))
+
+    #oob = gbr.oob_improvement_
+    train_score = gbr.train_score_
+    importances_gbr = gbr.feature_importances_
+
+    # plot
+    fig, ax = plt.subplots(1,1,figsize=(6,4))
+    h1 = ax.plot(range(len(y_test)),y_test,'b', label='actual')
+    h2 = ax.plot(range(len(preds_gbr)),preds_gbr,'r', label='predicted - gbr')
+    ax.set_ylabel('daily # of avalanches')
+    ax.set_title('Aspen, CO: avalanches >= D2')
+    ax.legend()
+    plt.show()
+
+    # feature importance plot
+    names = X_train.columns
+    filename = 'gbr_lag4_feats'
+    feat_importance_plot(gbr,names,filename,color='teal',alpha=0.5,fig_size=(10,10),dpi=250)
+
+    # training plot
+    fig, ax = plt.subplots(1,1,figsize=(6,4))
+    ax.plot(train_score,'-k')
+    ax.set_xlabel('boosting stage')
+    ax.set_ylabel('training score')
+    ax.set_title('Gradient Boosting Regressor training')
+
+    # save output
+    true = y_test.values.reshape(-1,1)
+    predicted = preds_gbr.reshape(-1,1)
+    output = np.concatenate((true, predicted), axis=1)
+    pickle.dump(output, open('output_gbr_tuned.p', 'wb'))
 
     # ''' poly splines '''
     # from sklearn.preprocessing import PolynomialFeatures
