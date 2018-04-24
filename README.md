@@ -2,12 +2,22 @@ Readme
 ## Empirical avalanche prediction in Colorado:
 #### Can a machine-learning model trained on historical climatic and avalanche data augment prediction of avalanche risk?
 
+__A capstone project for the Galvanize Data Science Immersive.__
+
 <img alt="avy" src="/pub_figs/skier_avy.png" width='500'>
 
-_source: Staying Alive in Avalanche Terrain_
+_source: Staying Alive in Avalanche Terrain, Bruce Tremper, The Mountaineers Books_
+
+__DISCLAIMER:__ This information is NOT intended to be used as an avalanche risk forecast. This is an empirical study done for scientific purposes. Refer to the professionals for avalache forecasts:
+
+http://avalanche.state.co.us
+
+## Preliminary work (as of April 24, 2018)
 
 ### Data:
-__CAIC Avalanche data__
+__Colorado Avalanche Information Center data__
+
+(Colorado Department of Natural Resources)
 
 10 backcountry zones:
 
@@ -18,7 +28,7 @@ avalanche observation data back to 1980:
 <img alt="caic zones" src="/pub_figs/caic_example.png" width='500'>
 
 __weather data__
-SNOTEL sensor network:
+SNOTEL sensor network (NRCS, USDA):
 
 <img alt="snotel network" src="/pub_figs/co_swe_current.png" width='500'>
 
@@ -51,6 +61,8 @@ __D2+ avalanches by backcountry zone:__
 
 
 ### modeling strategy:
+
+__preliminary study: Aspen zone__
 
 <img alt="caic zones" src="/pub_figs/aspen_closeup.png" width='200'>
 
@@ -180,7 +192,7 @@ __the goal:__ predict the risk of avalanches
 
 __classify predictions:__ ordinal --> binary
  - select threshold
- - if number of avalanches >= threshold, 1, else 0
+ - 1 if number of avalanches >= threshold, else 0
  - compare predictions and true record of events
 
 __Receiver Operating Characteristic:__
@@ -205,7 +217,7 @@ __next step:__ choose a threshold to maximize recall
 ## decisions for model implementation: accuracy, precision, recall
 _true range goes up to 6, but prediction range doesn't..._
 
-|a,c,r            |  roc |
+|accuracy, precison, recall            |  ROC |
 |:-------------------------:|:-------------------------:|
 |![](figs/model_metrics/acc_rec_prec_rfr.png)  |  ![](figs/model_metrics/ROC_rfr_gbr.png)|
 
@@ -240,7 +252,21 @@ __balanced model with high recall:__ threshold = 0.46
 |__actual 0__   |       228|        30|
 |__actual 1__   |        95|         83|
 
-### improvements:
+### Discussion
+
+- With a 6-year training period, a __Random Forest ensemble model can predict the number of D2+ avalanches is the Aspen zone__ during a 1.5-year test period with up to 78% accuracy.
+
+- Engineering time-series features into the feature matrix (with a lag time of _n_ days) greatly improved model performance. __4-day lag variables__ worked best for this pilot study.
+
+- The data is highly __class imbalanced__; dealing with this improved performance.
+
+- By binarizing predictions (0 or 1) based on a probability threshold, this model can be __optimized for recall__ (desired metric for application for risk forecasting) with a recall of 73% and accuracy of 71%.
+
+- Linear models did a poor job in predicting such a dynamic and stochastic process. Among a few of the __non-linear models__ I tried, the Random Forest ensemble model out-performed the Gradient Boosted model.
+
+- The most __important features__ used in training the Random Forest model make first-order sense: day-of-year, nightly low air temp, # of avalanches yesterday, etc. HOWEVER, the inclusion of daylight high air temp adds to evidence that there __may be a domain problem__ in trying to predict winter and spring avalanches with the same model (more below). Also, the _lack of precipitation_ in important features is questionable.
+
+### Improvements:
 __more data!__ models need a longer data record (and more backcountry zones) to train
  - obervation data are provided by public...biased towards weekends and popular areas
  - wind data: hard to find old records
@@ -248,8 +274,11 @@ __more data!__ models need a longer data record (and more backcountry zones) to 
    - brings its own data size problems... _dimensionality reduction?_
 
 __more flexible models__: hard to capture the highly variable nature of a stochastic natural process
-  - random forest regressor is not tuned yet
-  - could be good candidate for RNN with LSTM due to time-dependency
+  - could be good candidate for Recurrent-Neural-Network with LSTM due to time-dependency
+  - since there are physical processes underlying the reactions, a model parameterized with stochastic sampling from appropriate distributions could be interesting to pursue.
+
+__approach as a multi-class classification problem:__
+ - If predicted in classes 0-5, could compare with CAIC zone forecasts.
 
 __winter/spring domains:__
 
@@ -260,32 +289,6 @@ __winter/spring domains:__
  | wind loading, cold night temps | rapid warming, nights too warm |
  |![](pub_figs/avy_eg)  |  ![](pub_figs/loosewet.png)|
 
-
- contd...
-
- rfr tuning: barely helps
-
-- rfr out-of-bag train score = 0.989
-- rfr test rmse = 16.634
-
-gbr tuning
-{'loss': 'lad',
- 'max_depth': 6, (5 or 6)
- 'max_features': 'log2',
- 'min_samples_leaf': 4,
- 'min_samples_split': 4, (4 or 6)
- 'n_estimators': 600,
- 'subsample': 0.7}
-gbr cval training score = -0.124
-gbr test rmse = 19.933
-
-gbr tuning again
-{'loss': 'lad',
- 'max_depth': 5,
- 'max_features': 'log2',
- 'min_samples_leaf': 4,
- 'min_samples_split': 6,
- 'n_estimators': 600,
- 'subsample': 0.7}
-gbr cval training score = -0.021
-gbr test rmse = 19.046
+ __...in progress__
+  - stay tuned for part 2 in late May.
+  - contact: thedrewthayer@gmail.com
