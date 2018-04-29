@@ -254,7 +254,7 @@ __balanced model with high recall:__ threshold = 0.46
 
 ### Discussion
 
-- With a 6-year training period, a __Random Forest ensemble model can predict the number of D2+ avalanches is the Aspen zone__ during a 1.5-year test period with up to 78% accuracy.
+- With a 6-year training period, a __Random Forest ensemble model can predict the number of D2+ avalanches in the Aspen zone__ during a 1.5-year test period with up to 78% accuracy.
 
 - Engineering time-series features into the feature matrix (with a lag time of _n_ days) greatly improved model performance. __4-day lag variables__ worked best for this pilot study.
 
